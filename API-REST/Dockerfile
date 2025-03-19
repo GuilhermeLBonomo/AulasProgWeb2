@@ -7,8 +7,10 @@ COPY API-REST/package*.json ./
 RUN npm install
 
 COPY API-REST/src/ ./src/
+COPY API-REST/infra/ ./infra/
 
-RUN npm install -g nodemon
+RUN npm install -g nodemon 
+RUN npm install mysql2 --save
 
 FROM node:lts AS development
 
@@ -18,6 +20,7 @@ COPY API-REST/package*.json ./
 RUN npm install
 
 COPY API-REST/src/ ./src/
+COPY API-REST/infra/ ./infra/
 
 ENV NODE_ENV=development
 
