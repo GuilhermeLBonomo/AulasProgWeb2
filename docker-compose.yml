@@ -4,7 +4,7 @@ services:
   node:
     build:
       context: .
-      dockerfile: API-REST/Dockerfile
+      dockerfile: Dockerfile
     container_name: node_app
     working_dir: /usr/src/app
     volumes:
@@ -14,27 +14,27 @@ services:
     networks:
       - app_network
     depends_on:
-      - mysql
+      - mariadb
     environment:
-      - DB_HOST=mysql
+      - DB_HOST=mariadb
       - DB_PORT=3306
       - DB_USER=root
       - DB_PASSWORD=ugaUGA#123
       - DB_NAME=dbsenac
     command: [ "npm", "run", "dev" ]
 
-  mysql:
-    image: mysql:latest
-    container_name: mysql_db
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb_db
     environment:
       MYSQL_ROOT_PASSWORD: ugaUGA#123
       MYSQL_DATABASE: dbsenac
     ports:
-      - "3307:3306"
+      - "3306:3306"
     networks:
       - app_network
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
 networks:
@@ -42,5 +42,5 @@ networks:
     driver: bridge
 
 volumes:
-  mysql_data:
+  mariadb_data:
     driver: local

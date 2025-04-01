@@ -1,10 +1,9 @@
 import express from 'express';
-import conexao from '../../infra/conexao.js';
+import conexao from './database/conexao.js';
 
 const app = express();
 
 app.use(express.json());
-
 
 app.get('/listas', (req, res) => {
   try {
@@ -94,7 +93,4 @@ app.get('/listasAlunos', (req, res) => {
   res.status(200).json(dados);
 });
 
-export default app
-
-
-
+export default app;
