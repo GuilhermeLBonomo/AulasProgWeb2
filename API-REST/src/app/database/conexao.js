@@ -16,4 +16,17 @@ conexao.then(conn => {
     console.error('Erro ao conectar ao MariaDB:', err);
 });
 
+const consulta = (sql, params, messageReject) => {
+    return new Promise((resolve, reject) => {
+        conexao.query(sql, params, (error, result) => {
+            if (error) {
+                return reject(`${messageReject}:\n${error}`);
+            } else {
+                const rows = JSON.parse(JSON.stringify(result));
+                return resolve(rows);
+            }
+        });
+    });
+};
+
 export default conexao;

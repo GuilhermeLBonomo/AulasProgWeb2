@@ -1,60 +1,30 @@
-import conexao from "../database/conexao.js";
+import conexao, { consulta } from "../database/conexao.js";
 
 class AlunoRepository {
-  create() { }
+
+  create(alunoData) {
+    const sql = "INSERT INTO dbsenac.alunos (alunos_nome, alunos_grupo) VALUES (?, ?)";
+    return consulta(sql, [alunoData.alunos_nome, alunoData.alunos_grupo]);
+  }
 
   findAll() {
-    const sql = "SELECT * FROM dbsenac.alunos;";
-    return new Promise((resolve, reject) => {
-      conexao.query(sql, (error, result) => {
-        if (error) {
-          return reject(`Erro:\n${error}`);
-        } else {
-          const rows = JSON.parse(JSON.stringify(result));
-          return resolve(rows);
-        }
-      });
-    });
+    const sql = "SELECT * FROM dbsenac.alunos";
+    return consulta(sql);
   }
 
   findById(id) {
-    const sql = "SELECT * FROM dbsenac.alunos WHERE id = ?";
-    return new Promise((resolve, reject) => {
-      conexao.query(sql, [id], (error, result) => {
-        if (error) {
-          return reject(`Erro:\n${error}`);
-        } else {
-          const row = JSON.parse(JSON.stringify(result));
-          return resolve(row);
-        }
-      });
-    });
+    const sql = "SELECT * FROM dbsenac.alunos WHERE id_alunos = ?";
+    return consulta(sql, [id]);
   }
 
   update(id, updatedData) {
-    const sql = "UPDATE dbsenac.alunos SET ? WHERE id = ?";
-    return new Promise((resolve, reject) => {
-      conexao.query(sql, [updatedData, id], (error, result) => {
-        if (error) {
-          return reject(`Erro:\n${error}`);
-        } else {
-          return resolve(result);
-        }
-      });
-    });
+    const sql = "UPDATE dbsenac.alunos SET alunos_nome = ?, alunos_grupo = ? WHERE id_alunos = ?";
+    return consulta(sql, [updatedData.alunos_nome, updatedData.alunos_grupo, id]);
   }
 
   delete(id) {
-    const sql = "DELETE FROM dbsenac.alunos WHERE id = ?";
-    return new Promise((resolve, reject) => {
-      conexao.query(sql, [id], (error, result) => {
-        if (error) {
-          return reject(`Erro:\n${error}`);
-        } else {
-          return resolve(result);
-        }
-      });
-    });
+    const sql = "DELETE FROM dbsenac.alunos WHERE id_alunos = ?";
+    return consulta(sql, [id]);
   }
 }
 
